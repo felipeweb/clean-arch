@@ -17,6 +17,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/spf13/cobra"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 // serverCmd represents the server command
@@ -32,11 +34,12 @@ var serverCmd = &cobra.Command{
 		}
 		port := cmd.Flag("port").Value.String()
 		repo := cmd.Flag("repo").Value.String()
-		return runServer(port, repo, cmd.OutOrStdout(), cmd.OutOrStderr())
+		dsn := cmd.Flag("dsn").Value.String()
+		return runServer(port, repo, dsn, cmd.OutOrStdout(), cmd.OutOrStderr())
 	},
 }
 
-func runServer(port, repo string, out, errOut io.Writer) error {
+func runServer(port, repo, dsn string, out, errOut io.Writer) error {
 	fmt.Fprintf(out, "Starting server on port %s with %s repository\n", port, repo)
 	ctx := context.Background()
 	var r usecase.PortRepository
@@ -44,7 +47,11 @@ func runServer(port, repo string, out, errOut io.Writer) error {
 	case "memory":
 		r = repository.NewInMemory()
 	case "postgres":
-		//TODO: implement postgres repository
+		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		if err != nil {
+			return err
+		}
+		r = repository.NewPG(db)
 	}
 	svc := usecase.NewPortService(r)
 	router := chi.NewRouter()
@@ -96,11 +103,15 @@ func validateFlags(cmd *cobra.Command) error {
 	if repo != "memory" && repo != "postgres" {
 		return fmt.Errorf("invalid repository type: %s", repo)
 	}
+	if repo == "postgres" && cmd.Flag("dsn").Value.String() == "" {
+		return fmt.Errorf("db connection string is required. Use --dsn flag")
+	}
 	return nil
 }
 
 func init() {
 	serverCmd.PersistentFlags().IntP("port", "p", 8080, "Port to listen on, default: 8080")
 	serverCmd.PersistentFlags().StringP("repo", "r", "memory", "ports repository values: [memory, postgres] default: memory")
+	serverCmd.PersistentFlags().StringP("dsn", "d", "", "db connection string")
 	rootCmd.AddCommand(serverCmd)
 }

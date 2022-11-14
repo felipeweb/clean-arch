@@ -24,7 +24,7 @@ type PortInfo struct {
 
 // Port is a port.
 type Port struct {
-	Key      string `json:"key,omitempty"`
+	Key      string `json:"key,omitempty" gorm:"primaryKey"`
 	PortInfo `json:",inline"`
 }
 
