@@ -10,8 +10,8 @@ import (
 )
 
 type PortsTable struct {
-	Key      string `gorm:"primaryKey"`
-	PortInfo datatypes.JSON
+	Key      string         `gorm:"type:varchar(255);primaryKey"`
+	PortInfo datatypes.JSON `gorm:"type:jsonb"`
 }
 
 type PG struct {
