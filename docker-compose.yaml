@@ -4,7 +4,7 @@ services:
   ports:
     container_name: ports_container
     build: .
-    command: /ports server -r postgres -d postgresql://postgres:postgres@postgres:5432/postgres
+    command: /ports server -r postgres -d postgresql://postgres:postgres@postgres:5432/testdb
     ports:
       - "8080:8080"
     networks:
