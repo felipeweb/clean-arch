@@ -19,5 +19,5 @@ func NewPG(db *gorm.DB) *PG {
 }
 
 func (p *PG) Save(ctx context.Context, port *entity.Port) error {
-	return p.db.WithContext(ctx).Model(port).Save(port).Error
+	return p.db.WithContext(ctx).Save(port).Error
 }

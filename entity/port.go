@@ -25,7 +25,7 @@ type PortInfo struct {
 // Port is a port.
 type Port struct {
 	Key      string `json:"key,omitempty" gorm:"primaryKey"`
-	PortInfo `json:",inline"`
+	PortInfo `json:",inline" gorm:"embedded"`
 }
 
 // UnmarshalJSON unmarshals a port.
