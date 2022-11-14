@@ -11,7 +11,7 @@ ports server -p 8080 -r postgres -d postgres://postgres:postgres@localhost:5432/
 ## How to run using memory
 
 ```bash
-ports -p 8080 -r memory 
+ports server -p 8080 -r memory 
 ```
 
 
