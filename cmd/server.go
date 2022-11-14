@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/cenkalti/backoff/v4"
 	"github.com/felipeweb/clean-arch/handlers"
 	"github.com/felipeweb/clean-arch/repository"
 	"github.com/felipeweb/clean-arch/usecase"
@@ -47,11 +48,19 @@ func runServer(port, repo, dsn string, out, errOut io.Writer) error {
 	case "memory":
 		r = repository.NewInMemory()
 	case "postgres":
-		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		backof := backoff.NewExponentialBackOff()
+		backof.MaxElapsedTime = 10 * time.Second
+		err := backoff.Retry(func() error {
+			db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+			if err != nil {
+				return err
+			}
+			r = repository.NewPG(db)
+			return nil
+		}, backof)
 		if err != nil {
 			return err
 		}
-		r = repository.NewPG(db)
 	}
 	svc := usecase.NewPortService(r)
 	router := chi.NewRouter()
