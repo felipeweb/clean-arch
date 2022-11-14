@@ -11,21 +11,21 @@ var json = jsoniter.ConfigCompatibleWithStandardLibrary
 // PortInfo is the information of a port.
 type PortInfo struct {
 	Name        string    `json:"name"`
-	Coordinates []float64 `json:"coordinates" gorm:"type:float[]"`
+	Coordinates []float64 `json:"coordinates"`
 	City        string    `json:"city"`
 	Province    string    `json:"province"`
 	Country     string    `json:"country"`
-	Alias       []string  `json:"alias" gorm:"type:varchar[]"`
-	Regions     []string  `json:"regions" gorm:"type:varchar[]"`
+	Alias       []string  `json:"alias"`
+	Regions     []string  `json:"regions"`
 	Timezone    string    `json:"timezone"`
-	Unlocs      []string  `json:"unlocs" gorm:"type:varchar[]"`
+	Unlocs      []string  `json:"unlocs"`
 	Code        string    `json:"code"`
 }
 
 // Port is a port.
 type Port struct {
 	Key      string `json:"key,omitempty" gorm:"primaryKey"`
-	PortInfo `json:",inline" gorm:"embedded"`
+	PortInfo `json:",inline" gorm:"type:jsonb"`
 }
 
 // UnmarshalJSON unmarshals a port.
