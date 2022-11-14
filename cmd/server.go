@@ -80,7 +80,7 @@ func runServer(port, repo, dsn string, out, errOut io.Writer) error {
 	cerr := make(chan error, 1)
 	done := make(chan struct{}, 1)
 	shutdown := make(chan os.Signal, 1)
-	signal.Notify(shutdown, os.Interrupt, os.Kill, syscall.SIGTERM)
+	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
 	go func(ctx context.Context) {
 		<-shutdown
 		fmt.Fprintln(out, "Shutting down server...")
