@@ -22,4 +22,4 @@ WORKDIR /
 COPY --from=builder /workspace/ports .
 USER 65532:65532
 
-ENTRYPOINT ["/ports"]
+CMD ["/ports"]
