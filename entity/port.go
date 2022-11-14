@@ -11,7 +11,7 @@ var json = jsoniter.ConfigCompatibleWithStandardLibrary
 // PortInfo is the information of a port.
 type PortInfo struct {
 	Name        string    `json:"name"`
-	Coordinates []float64 `json:"coordinates"`
+	Coordinates []float64 `json:"coordinates" gorm:"type:varchar[]"`
 	City        string    `json:"city"`
 	Province    string    `json:"province"`
 	Country     string    `json:"country"`
