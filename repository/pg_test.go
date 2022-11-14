@@ -22,7 +22,7 @@ func TestPG_Save(t *testing.T) {
 	}{
 		{
 			name: "test save port on postgres",
-			dsn:  "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable",
+			dsn:  "postgresql://postgres:postgres@postgres:5432/testdb?sslmode=disable",
 			args: args{
 				port: &entity.Port{
 					Key: "AEAJM",
