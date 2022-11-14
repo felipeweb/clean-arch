@@ -7,7 +7,6 @@ import (
 	"github.com/felipeweb/clean-arch/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"zombiezen.com/go/postgrestest"
 )
 
 func TestPG_Save(t *testing.T) {
@@ -17,12 +16,14 @@ func TestPG_Save(t *testing.T) {
 	}
 	tests := []struct {
 		name    string
+		dsn     string
 		args    args
 		wantErr bool
 		rows    int
 	}{
 		{
 			name: "test save port on postgres",
+			dsn:  "postgresql://postgres:postgres@localhost:5432/testdb?sslmode=disable",
 			args: args{
 				port: &entity.Port{
 					Key: "AEAJM",
@@ -45,21 +46,10 @@ func TestPG_Save(t *testing.T) {
 		},
 	}
 	ctx := context.Background()
-	srv, err := postgrestest.Start(ctx)
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(srv.Cleanup)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			godb, err := srv.NewDatabase(ctx)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("PG.Save() godb error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			db, err := gorm.Open(postgres.New(postgres.Config{
-				Conn: godb,
-			}), &gorm.Config{})
+
+			db, err := gorm.Open(postgres.Open(tt.dsn), &gorm.Config{})
 			if (err != nil) != tt.wantErr {
 				t.Errorf("PG.Save() gorm db error = %v, wantErr %v", err, tt.wantErr)
 				return

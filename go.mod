@@ -11,7 +11,6 @@ require (
 	github.com/spf13/cobra v1.6.1
 	gorm.io/driver/postgres v1.4.5
 	gorm.io/gorm v1.24.1
-	zombiezen.com/go/postgrestest v1.0.1
 )
 
 require (
@@ -26,7 +25,6 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.4 // indirect
-	github.com/lib/pq v1.10.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
