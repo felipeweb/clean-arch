@@ -1,16 +1,14 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/caarlos0/httperr"
 	"github.com/felipeweb/clean-arch/entity"
 	"github.com/felipeweb/clean-arch/usecase"
 	"github.com/go-chi/chi/v5"
-	jsoniter "github.com/json-iterator/go"
 )
-
-var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 func savePorts(service usecase.PortUsecase) http.Handler {
 	return httperr.NewF(func(w http.ResponseWriter, r *http.Request) error {
@@ -26,7 +24,6 @@ func savePorts(service usecase.PortUsecase) http.Handler {
 			if err != nil {
 				return httperr.Wrap(err, http.StatusInternalServerError)
 			}
-
 		}
 		defer r.Body.Close()
 		w.WriteHeader(http.StatusAccepted)
