@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"flag"
 	"testing"
 
 	"github.com/felipeweb/clean-arch/entity"
@@ -10,13 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var testPG = flag.Bool("test-pg", false, "run postgres tests")
-
 func TestPG_Save(t *testing.T) {
-	flag.Parse()
-	if !*testPG {
-		t.Skip()
-	}
 	type args struct {
 		port *entity.Port
 	}
